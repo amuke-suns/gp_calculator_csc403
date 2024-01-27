@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp_calculator/get_started_screen.dart';
+import 'package:gp_calculator/gp_view_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,15 +13,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'GP Calculator',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-      ),
-      home: const SafeArea(
-        child: GetStartedScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => GpViewModel()),
+      ],
+      child: MaterialApp(
+        title: 'GP Calculator',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          useMaterial3: true,
+        ),
+        home: const GetStartedScreen(),
       ),
     );
   }
