@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gp_calculator/cgpa_view_model.dart';
 import 'package:gp_calculator/model/full_report.dart';
 import 'package:gp_calculator/services/storage_service.dart';
+import 'package:gp_calculator/utilities/alert_utils.dart';
 import 'package:gp_calculator/utilities/constants.dart';
 import 'package:gp_calculator/utilities/navigation_utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
-class CGPAHomeScreen extends StatelessWidget {
+class CGPAHomeScreen extends StatelessWidget with AlertUtils {
   const CGPAHomeScreen({super.key});
 
   @override
@@ -26,7 +29,9 @@ class CGPAHomeScreen extends StatelessWidget {
               ValueListenableBuilder<Box>(
                 valueListenable: Hive.box(kAppBoxName).listenable(),
                 builder: (context, box, widget) {
-                  List<FullReport> reports = box.values.map((json) => FullReport.fromJson(json)).toList();
+                  List<FullReport> reports = box.values
+                      .map((json) => FullReport.fromJson(json))
+                      .toList();
 
                   if (reports.isEmpty) {
                     return const Text(
@@ -58,7 +63,8 @@ class CGPAHomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    NavigationUtils.goToNamed(context, NavigationUtils.cgpaInput);
+                    NavigationUtils.goToNamed(
+                        context, NavigationUtils.cgpaInput);
                   },
                   child: const Text('Add Semester'),
                 ),
@@ -67,7 +73,8 @@ class CGPAHomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    NavigationUtils.goToNamed(context, NavigationUtils.cgpaList);
+                    NavigationUtils.goToNamed(
+                        context, NavigationUtils.cgpaList);
                   },
                   child: const Text('View/Edit Existing Records'),
                 ),
@@ -76,7 +83,8 @@ class CGPAHomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    final password = await StorageServiceImpl().getCGPAPassword();
+                    final password =
+                        await StorageServiceImpl().getCGPAPassword();
                     if (context.mounted) {
                       NavigationUtils.goToChangePassword(context, password);
                     }
@@ -87,8 +95,42 @@ class CGPAHomeScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Clear CGPA'),
+                  onPressed: () async {
+                    final provider = Provider.of<CGPAViewModel>(context, listen: false);
+                    if (provider.getBoxSize() == 0) {
+                      const snackBar = SnackBar(
+                        content: Text('There are no records to clear.'),
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } else {
+                      bool? isCorrectPassword = await showPasswordDialog(
+                          context,
+                          title: 'Enter your password to clear all the records:\n',
+                          actionText: 'CLEAR RECORDS'
+                      );
+
+                      if (context.mounted) {
+                        if (isCorrectPassword == false) {
+                          const snackBar = SnackBar(
+                            content: Text('Incorrect Password'),
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else if (isCorrectPassword == true) {
+                          provider.deleteAll();
+
+                          const snackBar = SnackBar(
+                            content: Text('All records deleted successfully'),
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
+                    }
+
+                  },
+                  child: const Text('Clear All Records'),
                 ),
               ),
             ],

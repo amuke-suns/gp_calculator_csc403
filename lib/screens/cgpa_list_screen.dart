@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gp_calculator/cgpa_view_model.dart';
 import 'package:gp_calculator/gp_view_model.dart';
 import 'package:gp_calculator/model/full_report.dart';
-import 'package:gp_calculator/screens/calc_options_screen.dart';
 import 'package:gp_calculator/utilities/constants.dart';
 import 'package:gp_calculator/utilities/navigation_utils.dart';
 import 'package:hive/hive.dart';
@@ -19,8 +18,11 @@ class CGPAListScreen extends StatelessWidget {
         box.values.map((json) => FullReport.fromJson(json)).toList();
 
     if (reports.isEmpty) {
-      return const Scaffold(
-        body: Center(
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Existing Records'),
+        ),
+        body: const Center(
           child: Text('No records yet!'),
         ),
       );

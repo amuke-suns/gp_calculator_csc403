@@ -33,15 +33,19 @@ class CalcOptionsScreen extends StatelessWidget with AlertUtils {
                   AppButton(
                     title: 'One Semester',
                     onPressed: () {
-                      NavigationUtils.goToNamed(context, NavigationUtils.oneSemesterInput);
+                      NavigationUtils.goToNamed(
+                          context, NavigationUtils.oneSemesterInput);
                     },
                   ),
                   const SizedBox(height: 24),
                   AppButton(
                     title: 'Cumulative Calculations',
                     onPressed: () async {
-                      bool? isCorrectPassword =
-                          await showPasswordDialog(context);
+                      bool? isCorrectPassword = await showPasswordDialog(
+                        context,
+                        title: 'Enter your password\n',
+                        actionText: 'ENTER',
+                      );
 
                       if (context.mounted) {
                         if (isCorrectPassword == false) {
@@ -51,7 +55,8 @@ class CalcOptionsScreen extends StatelessWidget with AlertUtils {
 
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         } else if (isCorrectPassword == true) {
-                          NavigationUtils.goToNamed(context, NavigationUtils.cgpaHome);
+                          NavigationUtils.goToNamed(
+                              context, NavigationUtils.cgpaHome);
                         }
                       }
                     },

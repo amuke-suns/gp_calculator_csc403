@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gp_calculator/services/storage_service.dart';
 
 mixin AlertUtils {
-  Future<bool?> showPasswordDialog(BuildContext context) async {
+  Future<bool?> showPasswordDialog(
+    BuildContext context, {
+    required String title,
+    required String actionText,
+  }) async {
     String currentPassword = await StorageServiceImpl().getCGPAPassword();
     String inputPassword = '';
     if (context.mounted) {
@@ -10,38 +14,29 @@ mixin AlertUtils {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text.rich(
+            title: Text.rich(
               TextSpan(
-                text: 'Enter your password\n',
-                style: TextStyle(
+                text: title,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
-                children: [
+                children: const [
                   TextSpan(
-                    text: 'Your initial password is: ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 12,
-                    )
-                  ),
+                      text: 'Your initial password is: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      )),
                   TextSpan(
                       text: 'password',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
-                      )
-                  ),
+                      )),
                 ],
               ),
             ),
-            /*const Text(
-              'Enter the password',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            )*/
             shape: const RoundedRectangleBorder(),
             content: TextField(
               onChanged: (value) {
@@ -59,7 +54,7 @@ mixin AlertUtils {
                     currentPassword == inputPassword,
                   );
                 },
-                child: const Text('ENTER'),
+                child: Text(actionText),
               ),
             ],
           );
