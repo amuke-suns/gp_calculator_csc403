@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gp_calculator/calc_options_screen.dart';
+import 'package:gp_calculator/screens/calc_options_screen.dart';
+import 'package:gp_calculator/utilities/constants.dart';
+import 'package:gp_calculator/utilities/navigation_utils.dart';
 import 'package:gp_calculator/widgets/app_button.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -55,12 +56,7 @@ class GetStartedScreen extends StatelessWidget {
                   AppButton(
                     title: 'Get Started',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CalcOptionsScreen(),
-                        ),
-                      );
+                      NavigationUtils.goToNamed(context, NavigationUtils.options);
                     },
                   ),
                 ],

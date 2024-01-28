@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:gp_calculator/gp_report_screen.dart';
 import 'package:gp_calculator/gp_view_model.dart';
 import 'package:gp_calculator/model/course.dart';
 import 'package:gp_calculator/utilities/constants.dart';
+import 'package:gp_calculator/utilities/navigation_utils.dart';
 import 'package:gp_calculator/utilities/validators.dart';
 import 'package:gp_calculator/widgets/dropdown_card.dart';
+import 'package:gp_calculator/widgets/dropdown_card_no_edit.dart';
 import 'package:provider/provider.dart';
 
-class OneSemesterScreen extends StatefulWidget {
-  const OneSemesterScreen({super.key});
-
-  @override
-  State<OneSemesterScreen> createState() => _OneSemesterScreenState();
+enum CalculationOption {
+  oneSemester,
+  cumulative,
+  editSemester,
 }
 
-class _OneSemesterScreenState extends State<OneSemesterScreen> {
+class GradeInputScreen extends StatefulWidget {
+  final CalculationOption calculationOption;
+
+  const GradeInputScreen({
+    super.key,
+    required this.calculationOption,
+  });
+
+  @override
+  State<GradeInputScreen> createState() => _GradeInputScreenState();
+}
+
+class _GradeInputScreenState extends State<GradeInputScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    Provider.of<GpViewModel>(context, listen: false).init();
+    if (widget.calculationOption != CalculationOption.editSemester) {
+      Provider.of<GpViewModel>(context, listen: false).reset();
+    }
     super.initState();
   }
 
@@ -37,30 +51,44 @@ class _OneSemesterScreenState extends State<OneSemesterScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownCard(
-                      title: 'Session',
-                      dropdownList: List.generate(
-                        40,
-                        (index) => '${index + 2010}/${index + 2011}',
-                      ),
-                      onSelect: (value) {
-                        Provider.of<GpViewModel>(context, listen: false)
-                            .session = value;
-                      },
-                      selectedOption: provider.session,
-                    ),
+                    child: widget.calculationOption ==
+                            CalculationOption.editSemester
+                        ? DropdownCardNoEdit(
+                            title: 'Session',
+                            selectedOption: provider.session!,
+                          )
+                        : DropdownCard(
+                            title: 'Session',
+                            dropdownList: List.generate(
+                              40,
+                              (index) => '${index + 2010}/${index + 2011}',
+                            ),
+                            onSelect: (value) {
+                              Provider.of<GpViewModel>(
+                                context,
+                                listen: false,
+                              ).session = value;
+                            },
+                            selectedOption: provider.session,
+                          ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: DropdownCard(
-                      title: 'Semester',
-                      dropdownList: const ['Harmattan', 'Rain'],
-                      onSelect: (value) {
-                        Provider.of<GpViewModel>(context, listen: false)
-                            .semester = value;
-                      },
-                      selectedOption: provider.semester,
-                    ),
+                    child: widget.calculationOption ==
+                            CalculationOption.editSemester
+                        ? DropdownCardNoEdit(
+                            title: 'Semester',
+                            selectedOption: provider.semester!,
+                          )
+                        : DropdownCard(
+                            title: 'Semester',
+                            dropdownList: const ['Harmattan', 'Rain'],
+                            onSelect: (value) {
+                              Provider.of<GpViewModel>(context, listen: false)
+                                  .semester = value;
+                            },
+                            selectedOption: provider.semester,
+                          ),
                   ),
                 ],
               ),
@@ -219,14 +247,15 @@ class _OneSemesterScreenState extends State<OneSemesterScreen> {
       final form = _formKey.currentState!;
 
       if (form.validate()) {
-        final gpReport = provider.calculateGP();
+        if (widget.calculationOption == CalculationOption.oneSemester) {
+          final gpReport = provider.getGpReport();
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => GpReportScreen(report: gpReport),
-          ),
-        );
+          NavigationUtils.goToGpReport(context, gpReport);
+        } else {
+          final fullReport = provider.getFullReport();
+
+          NavigationUtils.goToFullReport(context, fullReport);
+        }
       }
     } else {
       final snackBar = SnackBar(

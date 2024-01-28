@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:gp_calculator/get_started_screen.dart';
 import 'package:gp_calculator/gp_view_model.dart';
+import 'package:gp_calculator/model/full_report.dart';
+import 'package:gp_calculator/model/gp_report.dart';
+import 'package:gp_calculator/screens/calc_options_screen.dart';
+import 'package:gp_calculator/screens/cgpa_home_screen.dart';
+import 'package:gp_calculator/screens/cgpa_list_screen.dart';
+import 'package:gp_calculator/screens/full_report_screen.dart';
+import 'package:gp_calculator/screens/get_started_screen.dart';
+import 'package:gp_calculator/screens/gp_report_screen.dart';
+import 'package:gp_calculator/screens/grade_input_screen.dart';
+import 'package:gp_calculator/utilities/constants.dart';
+import 'package:gp_calculator/utilities/navigation_utils.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'cgpa_view_model.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  await Hive.openBox(kAppBoxName);
+
   runApp(const MyApp());
 }
 
@@ -16,6 +34,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => GpViewModel()),
+        ChangeNotifierProvider(create: (_) => CGPAViewModel()),
       ],
       child: MaterialApp(
         title: 'GP Calculator',
@@ -24,66 +43,29 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
           useMaterial3: true,
         ),
-        home: const GetStartedScreen(),
-      ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  final String title;
-
-  const HomePage({
-    super.key,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.help_rounded),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings),
+        initialRoute: NavigationUtils.initial,
+        routes: {
+          NavigationUtils.initial: (context) => const GetStartedScreen(),
+          NavigationUtils.options: (context) => const CalcOptionsScreen(),
+          NavigationUtils.cgpaList: (context) => const CGPAListScreen(),
+          NavigationUtils.oneSemesterInput: (context) => const GradeInputScreen(
+                calculationOption: CalculationOption.oneSemester,
+              ),
+          NavigationUtils.cgpaInput: (context) => const GradeInputScreen(
+                calculationOption: CalculationOption.cumulative,
+              ),
+          NavigationUtils.editSemester: (context) => const GradeInputScreen(
+            calculationOption: CalculationOption.editSemester,
           ),
-        ],
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Compute One Semester GP'),
-                ),
+          NavigationUtils.cgpaHome: (context) => const CGPAHomeScreen(),
+          NavigationUtils.gpReport: (context) => GpReportScreen(
+                report: ModalRoute.of(context)?.settings.arguments as GpReport,
               ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Manage Cumulative GP'),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('About App'),
-                ),
-              ),
-            ],
+          NavigationUtils.fullReport: (context) => FullReportScreen(
+            fullReport: ModalRoute.of(context)?.settings.arguments as FullReport,
           ),
-        ),
+
+        },
       ),
     );
   }

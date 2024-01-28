@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gp_calculator/model/gp_report.dart';
 import 'package:gp_calculator/utilities/constants.dart';
+import 'package:gp_calculator/utilities/navigation_utils.dart';
 import 'package:gp_calculator/widgets/app_button.dart';
 
 class GpReportScreen extends StatelessWidget {
@@ -65,7 +66,9 @@ class GpReportScreen extends StatelessWidget {
               ),
               AppButton(
                 title: 'Back to Home',
-                onPressed: () {},
+                onPressed: () {
+                  NavigationUtils.goBackToOptions(context);
+                },
               ),
             ],
           ),

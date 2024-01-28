@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gp_calculator/one_semester_screen.dart';
+import 'package:gp_calculator/utilities/alert_utils.dart';
+import 'package:gp_calculator/utilities/navigation_utils.dart';
 import 'package:gp_calculator/widgets/app_button.dart';
 
-class CalcOptionsScreen extends StatelessWidget {
+class CalcOptionsScreen extends StatelessWidget with AlertUtils {
   const CalcOptionsScreen({super.key});
 
   @override
@@ -32,18 +33,28 @@ class CalcOptionsScreen extends StatelessWidget {
                   AppButton(
                     title: 'One Semester',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OneSemesterScreen(),
-                        ),
-                      );
+                      NavigationUtils.goToNamed(context, NavigationUtils.oneSemesterInput);
                     },
                   ),
                   const SizedBox(height: 24),
                   AppButton(
                     title: 'Cumulative Calculations',
-                    onPressed: () {},
+                    onPressed: () async {
+                      bool? isCorrectPassword =
+                          await showPasswordDialog(context);
+
+                      if (context.mounted) {
+                        if (isCorrectPassword == false) {
+                          const snackBar = SnackBar(
+                            content: Text('Incorrect Password'),
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else if (isCorrectPassword == true) {
+                          NavigationUtils.goToNamed(context, NavigationUtils.cgpaHome);
+                        }
+                      }
+                    },
                   ),
                 ],
               ),

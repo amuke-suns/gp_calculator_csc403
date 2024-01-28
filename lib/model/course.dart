@@ -44,4 +44,21 @@ class Course {
   String toString() {
     return '$name, $units, $grade';
   }
+
+  factory Course.fromJson(Map<dynamic, dynamic> json) {
+    final course = Course(
+      name: json['name'],
+      units: json['units'],
+    );
+
+    course.grade = json['grade'];
+
+    return course;
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'units': units,
+    'grade': grade,
+  };
 }
