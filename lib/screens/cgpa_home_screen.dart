@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_calculator/model/full_report.dart';
+import 'package:gp_calculator/services/storage_service.dart';
 import 'package:gp_calculator/utilities/constants.dart';
 import 'package:gp_calculator/utilities/navigation_utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -74,7 +75,12 @@ class CGPAHomeScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final password = await StorageServiceImpl().getCGPAPassword();
+                    if (context.mounted) {
+                      NavigationUtils.goToChangePassword(context, password);
+                    }
+                  },
                   child: const Text('Change Password'),
                 ),
               ),

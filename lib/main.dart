@@ -5,6 +5,7 @@ import 'package:gp_calculator/model/gp_report.dart';
 import 'package:gp_calculator/screens/calc_options_screen.dart';
 import 'package:gp_calculator/screens/cgpa_home_screen.dart';
 import 'package:gp_calculator/screens/cgpa_list_screen.dart';
+import 'package:gp_calculator/screens/change_password_screen.dart';
 import 'package:gp_calculator/screens/full_report_screen.dart';
 import 'package:gp_calculator/screens/get_started_screen.dart';
 import 'package:gp_calculator/screens/gp_report_screen.dart';
@@ -63,6 +64,9 @@ class MyApp extends StatelessWidget {
               ),
           NavigationUtils.fullReport: (context) => FullReportScreen(
             fullReport: ModalRoute.of(context)?.settings.arguments as FullReport,
+          ),
+          NavigationUtils.changePassword: (context) => ChangePasswordScreen(
+            currentPassword: ModalRoute.of(context)?.settings.arguments as String,
           ),
 
         },

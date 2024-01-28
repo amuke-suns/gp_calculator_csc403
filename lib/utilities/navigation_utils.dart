@@ -12,6 +12,7 @@ class NavigationUtils {
   static String gpReport = '/report';
   static String fullReport = '/fullReport';
   static String cgpaList = '/cgpaList';
+  static String changePassword = '/changePassword';
 
   static void goToNamed(BuildContext context, String name) {
     Navigator.pushNamed(context, name);
@@ -23,6 +24,10 @@ class NavigationUtils {
 
   static void goToFullReport(BuildContext context, FullReport report) {
     Navigator.pushNamed(context, fullReport, arguments: report);
+  }
+
+  static void goToChangePassword(BuildContext context, String currentPassword) {
+    Navigator.pushNamed(context, changePassword, arguments: currentPassword);
   }
 
   static void goBackToOptions(BuildContext context) {
