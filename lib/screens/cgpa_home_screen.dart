@@ -34,11 +34,22 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
                       .toList();
 
                   if (reports.isEmpty) {
-                    return const Text(
-                      'GP: 0.00',
-                      style: TextStyle(
-                        fontSize: 42,
+                    return const Text.rich(
+                      TextSpan(
+                        text: 'GP: 0.00\n',
+                        style: TextStyle(
+                          fontSize: 42,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'For 0 semester(s).',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
+                      textAlign: TextAlign.center,
                     );
                   }
                   int sumCumulatedPoints = 0;
@@ -51,11 +62,22 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
 
                   double cgpa = sumCumulatedPoints / sumTotalUnits;
 
-                  return Text(
-                    'GP: ${cgpa.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 42,
+                  return Text.rich(
+                    TextSpan(
+                      text: 'GP: ${cgpa.toStringAsFixed(2)}\n',
+                      style: const TextStyle(
+                        fontSize: 42,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'For ${box.length} semester(s).',
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
+                    textAlign: TextAlign.center,
                   );
                 },
               ),
@@ -96,7 +118,8 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    final provider = Provider.of<CGPAViewModel>(context, listen: false);
+                    final provider =
+                        Provider.of<CGPAViewModel>(context, listen: false);
                     if (provider.getBoxSize() == 0) {
                       const snackBar = SnackBar(
                         content: Text('There are no records to clear.'),
@@ -106,9 +129,9 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
                     } else {
                       bool? isCorrectPassword = await showPasswordDialog(
                           context,
-                          title: 'Enter your password to clear all the records:\n',
-                          actionText: 'CLEAR RECORDS'
-                      );
+                          title:
+                              'Enter your password to clear all the records:\n',
+                          actionText: 'CLEAR RECORDS');
 
                       if (context.mounted) {
                         if (isCorrectPassword == false) {
@@ -128,7 +151,6 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
                         }
                       }
                     }
-
                   },
                   child: const Text('Clear All Records'),
                 ),
