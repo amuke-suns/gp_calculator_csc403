@@ -45,9 +45,18 @@ class _GradeInputScreenState extends State<GradeInputScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Text(
+                'Enter Course Details',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
@@ -126,12 +135,36 @@ class _GradeInputScreenState extends State<GradeInputScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 16),
               const Row(
                 children: [
-                  Expanded(child: Text('Course')),
-                  Expanded(child: Text('Units')),
-                  Expanded(child: Text('Grade')),
+                  Expanded(
+                    child: Text(
+                      'Course',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Units',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Grade',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Expanded(
@@ -211,7 +244,10 @@ class _GradeInputScreenState extends State<GradeInputScreen> {
                         courses.removeLast();
                       });
                     },
-                    icon: const Icon(Icons.remove),
+                    icon: const Icon(
+                      Icons.remove,
+                      size: 32,
+                    ),
                   ),
                   Expanded(
                     child: ElevatedButton(
@@ -220,7 +256,10 @@ class _GradeInputScreenState extends State<GradeInputScreen> {
                         backgroundColor: kPrimaryColor,
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text('Calculate GP'),
+                      child: const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text('Calculate GP'),
+                      ),
                     ),
                   ),
                   IconButton(
@@ -229,7 +268,10 @@ class _GradeInputScreenState extends State<GradeInputScreen> {
                         courses.add(Course());
                       });
                     },
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(
+                      Icons.add,
+                      size: 32,
+                    ),
                   ),
                 ],
               ),

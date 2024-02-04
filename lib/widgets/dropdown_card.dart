@@ -67,9 +67,10 @@ class _DropdownCardState extends State<DropdownCard> {
           },
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10.0)
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
