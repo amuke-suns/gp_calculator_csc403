@@ -51,7 +51,14 @@ class GpReportScreen extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text: 'This GPA reflects your performance '
+                      text: report.getGradeClass(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '\nThis GPA reflects your performance '
                           'for the ${report.level} Level, ${report.session} Session, '
                           '${report.semester} Semester.',
                       style: const TextStyle(

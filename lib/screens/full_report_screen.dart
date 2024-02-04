@@ -53,7 +53,14 @@ class FullReportScreen extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text: 'This GPA reflects your performance '
+                      text: fullReport.getGradeClass(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '\nThis GPA reflects your performance '
                           'for the ${fullReport.level} Level, ${fullReport.session} Session, '
                           '${fullReport.semester} Semester.',
                       style: const TextStyle(

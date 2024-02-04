@@ -66,6 +66,8 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
 
                   double cgpa = sumCumulatedPoints / sumTotalUnits;
 
+                  String gradeClass = getGradeClass(cgpa);
+
                   return Text.rich(
                     TextSpan(
                       text: 'GP: ${cgpa.toStringAsFixed(2)}\n',
@@ -74,7 +76,14 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
                       ),
                       children: [
                         TextSpan(
-                          text: 'For ${box.length} semester(s).',
+                          text: gradeClass,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '\nAfter ${box.length} semester(s).',
                           style: const TextStyle(
                             fontSize: 14,
                           ),
@@ -172,5 +181,21 @@ class CGPAHomeScreen extends StatelessWidget with AlertUtils {
         ),
       ),
     );
+  }
+
+  String getGradeClass(double cgpa) {
+    if (cgpa >= 4.5) {
+      return "First Class Honours";
+    } else if (cgpa >= 3.5) {
+      return 'Second Class (Upper) Honours';
+    } else if (cgpa >= 2.5) {
+      return 'Second Class (Lower) Honours';
+    } else if (cgpa >= 1.5) {
+      return 'Third Class';
+    } else if (cgpa >= 1.0) {
+      return 'Pass';
+    } else {
+      return 'Fail';
+    }
   }
 }
