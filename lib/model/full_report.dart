@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:gp_calculator/model/course.dart';
 
 class FullReport {
@@ -49,6 +50,23 @@ class FullReport {
       return 'Pass';
     } else {
       return 'Fail';
+    }
+  }
+
+  Color getGradeColor() {
+    double cgpa = double.parse(gpa);
+    if (cgpa >= 4.5) {
+      return const Color(0xFF2ecc71);
+    } else if (cgpa >= 3.5) {
+      return const Color(0xFF3498db);
+    } else if (cgpa >= 2.5) {
+      return const Color(0xffb69e43);
+    } else if (cgpa >= 1.5) {
+      return const Color(0xFFe67e22);
+    } else if (cgpa >= 1.0) {
+      return const Color(0xff000000);
+    } else {
+      return const Color(0xFFe74c3c);
     }
   }
 

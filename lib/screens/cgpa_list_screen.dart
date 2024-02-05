@@ -50,11 +50,25 @@ class CGPAListScreen extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                subtitle: Text(
-                  '${report.level} Level\nTotal Units: ${report.totalUnits}',
+                subtitle: Text.rich(
+                  TextSpan(
+                    text: '${report.level} Level\nTotal Units: ${report.totalUnits}\n',
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: report.getGradeClass(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 leading: CircleAvatar(
-                  backgroundColor: kPrimaryColor,
+                  backgroundColor: report.getGradeColor(),
                   child: Text(
                     report.gpa,
                     style: const TextStyle(color: Colors.white),
